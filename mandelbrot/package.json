@@ -1,0 +1,19 @@
+{
+  "name": "mandelbrot",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "mandelbrot-wasm": "file:../mandelbrot-wasm/pkg",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "vite-plugin-wasm": "^3.2.2"
+  }
+}
