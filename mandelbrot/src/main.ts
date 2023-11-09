@@ -1,24 +1,17 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { memory } from "../../mandelbrot-wasm/pkg/mandelbrot_wasm_bg.wasm";
+import { Renderer } from "../../mandelbrot-wasm/pkg/mandelbrot_wasm";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const canvas = document.getElementById("plot-canvas");
+const width: number = 600;
+const height: number = 600;
+canvas.width = width;
+canvas.height = height;
+const renderer = Renderer.new(width, height);
+const canvas_address = renderer.get_canvas();
+const array = new Uint8ClampedArray(memory.buffer, canvas_address, width * height * 4);
+const image = new ImageData(
+  array, width
+)
+const ctx = canvas.getContext("2d");
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+ctx.putImageData(image, 0, 0);
