@@ -4,9 +4,17 @@ My implementation of a visualization of the mandelbrot set written in Rust and c
 
 ## Architecture
 The Rust code exposes a struct called Canvas, which contains an array of u32 numbers which each represent a colour. Each colour is built up of four bytes, each byte representing one element of the RGBA value of that colour. The bytes are set throughout the code by using `0x00_00_00_00` notation where each '_' separated element is one byte. This is in reverse order, so: `0xA_B_G_R`.
+
 The Canvas has a property which is a Box containing a struct that implements the `Renderable` trait, meaning that it has `render()` and `tick()` functions. These allow a `Renderable` object to be used for drawing onto the Canvas.
-The `render()` method has the following signature: `render(&self, x: usize, y: usize) -> u32` meaning that it takes a reference to itself and a x and y coordinate on the Canvas, and returns a colour represented in u32 format. The logic of how a x and y position are converted into a colour are dependent on the `Renderable` object, meaning that different interesting visualizations can be easily implemented.
-The `tick()` method has the following signature: `tick(&mut self) -> ()` meaning that it takes a mutable reference to itself, and returns nothing. This function is called after every frame of animation, and allows the object to change its internal state such that the next render call will produce a different image. For example, the `Mandelbrot` struct implements the `tick()` method such that it alters the span in both real and imaginary space in which it renders, resulting in a zoom-in effect.
+
+The `render()` method has the following signature: 
+`render(&self, x: usize, y: usize) -> u32`
+meaning that it takes a reference to itself and a x and y coordinate on the Canvas, and returns a colour represented in u32 format. 
+The logic of how a x and y position are converted into a colour are dependent on the `Renderable` object, meaning that different interesting visualizations can be easily implemented.
+For example, the `Mandelbrot` struct transforms the given x and y coordinates from pixel location into a complex number, and then feeds this into its mandelbrot function to iterate the z = z^2 + c function and determine which colour the pixel should get based on the result.
+
+The `tick()` method has the following signature: `tick(&mut self) -> ()` meaning that it takes a mutable reference to itself, and returns nothing. This function is called after every frame of animation, and allows the object to change its internal state such that the next render call will produce a different image. 
+For example, the `Mandelbrot` struct implements the `tick()` method such that it alters the span in both real and imaginary space in which it renders, resulting in a zoom-in effect.
 
 ## Running the project
 
