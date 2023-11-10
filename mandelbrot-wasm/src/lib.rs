@@ -1,3 +1,4 @@
+mod canvas;
 mod complex;
 mod imaginary;
-mod renderer;
+mod renderables;
