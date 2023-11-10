@@ -47,10 +47,11 @@ impl Mandelbrot {
     }
 
     fn get_color_for_number(&self, number: usize) -> u32 {
-        let value: u8 = ((256.0 / self.max_iter as f64) * (number as f64)) as u8;
+        let value: u8 = ((255.0 / self.max_iter as f64) * (number as f64)) as u8;
         let begin_color = 0xFF_00_FF_00;
         let red_hue = (value as u32) << 0;
-        begin_color | red_hue
+        let blue_hue = ((255 - value) as u32) << 16;
+        begin_color | red_hue | blue_hue
     }
 
     fn translate(&self, x: usize, y: usize) -> Complex {
