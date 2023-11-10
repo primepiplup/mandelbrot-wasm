@@ -1,8 +1,8 @@
 use crate::imaginary::Imaginary;
 use std::ops::{Add, Mul, Sub};
 
-#[derive(Debug, PartialEq)]
-struct Complex {
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Complex {
     real: f64,
     imaginary: Imaginary,
 }
@@ -13,6 +13,10 @@ impl Complex {
             real,
             imaginary: Imaginary::new(imaginary),
         }
+    }
+
+    pub fn within(&self, value: f64) -> bool {
+        (self.real.abs() < value) && (self.imaginary.magnitude().abs() < value)
     }
 }
 
@@ -55,6 +59,17 @@ impl Mul<Complex> for Complex {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn complex_number_can_be_checked_to_be_constrained_within_magnitude() {
+        let cn = Complex::new(-100001.0, 20.0);
+
+        let result = cn.within(100000.0);
+        let result_2 = cn.within(100002.0);
+
+        assert_eq!(result, false);
+        assert_eq!(result_2, true);
+    }
 
     #[test]
     fn complex_numbers_are_multiplied_correctly() {

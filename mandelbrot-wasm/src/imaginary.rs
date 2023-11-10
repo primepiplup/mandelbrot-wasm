@@ -9,6 +9,10 @@ impl Imaginary {
     pub fn new(number: f64) -> Imaginary {
         Imaginary { number }
     }
+
+    pub fn magnitude(&self) -> f64 {
+        self.number
+    }
 }
 
 impl Add<Imaginary> for Imaginary {
